@@ -9,24 +9,33 @@ class CalculatorPage extends StatefulWidget {
 }
 
 class _CalculatorPageState extends State<CalculatorPage> {
+  // Font size constant for consistency
+  static const double _fontSize = 24.0;
+
+  // Variables to store the input expression and calculation result
   String _expression = '';
   String _result = '';
 
+  // Function to handle button presses
   void _onButtonPressed(String buttonText) {
     setState(() {
       if (buttonText == 'C') {
+        // Clear the expression and result on 'C' button press
         _expression = '';
         _result = '';
       } else if (buttonText == '=') {
+        // Evaluate the expression and update the result on '=' button press
         try {
           Parser p = Parser();
           Expression exp = p.parse(_expression);
           MyContextModel cm = MyContextModel();
           _result = exp.evaluate(EvaluationType.REAL, cm).toString();
         } catch (e) {
+          // Handle evaluation errors
           _result = 'Error';
         }
       } else {
+        // Concatenate the button text to the expression
         _expression += buttonText;
       }
     });
@@ -35,11 +44,20 @@ class _CalculatorPageState extends State<CalculatorPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Calculator')),
+      appBar: AppBar(
+        title: Text('Calculator'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            // Navigate back when the back arrow is pressed
+            Navigator.pop(context);
+          },
+        ),
+      ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // Display
+          // Display for expression
           Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
@@ -48,11 +66,11 @@ class _CalculatorPageState extends State<CalculatorPage> {
             ),
             child: Text(
               _expression,
-              style: const TextStyle(fontSize: 24),
+              style: TextStyle(fontSize: _fontSize),
             ),
           ),
 
-          // Result
+          // Result display
           Container(
             margin: const EdgeInsets.symmetric(vertical: 10),
             padding: const EdgeInsets.all(20),
@@ -62,7 +80,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
             ),
             child: Text(
               _result,
-              style: const TextStyle(fontSize: 24),
+              style: TextStyle(fontSize: _fontSize),
             ),
           ),
 
@@ -85,6 +103,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
     );
   }
 
+  // Function to build calculator buttons
   Widget _buildButton(String buttonText) {
     return ElevatedButton(
       onPressed: () => _onButtonPressed(buttonText),
@@ -97,11 +116,12 @@ class _CalculatorPageState extends State<CalculatorPage> {
       ),
       child: Text(
         buttonText,
-        style: const TextStyle(fontSize: 20, color: Colors.white),
+        style: TextStyle(fontSize: _fontSize, color: Colors.white),
       ),
     );
   }
 
+  // List of calculator buttons
   List<String> buttons = [
     '7', '8', '9', '/',
     '4', '5', '6', '*',
@@ -110,6 +130,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
   ];
 }
 
+// Custom context model for math expressions
 class MyContextModel extends ContextModel {
   @override
   double get value => 0.0;

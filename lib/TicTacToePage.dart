@@ -1,4 +1,3 @@
-// lib/TicTacToePage.dart
 import 'package:flutter/material.dart';
 
 class TicTacToePage extends StatefulWidget {
@@ -9,16 +8,23 @@ class TicTacToePage extends StatefulWidget {
 }
 
 class _TicTacToePageState extends State<TicTacToePage> {
-  List<String> board = List.filled(9, '');
+  List<String> board = List.filled(9, ''); // Represents the Tic Tac Toe board
 
-  String currentPlayer = 'X';
-  bool gameFinished = false;
+  String currentPlayer = 'X'; // Current player's symbol ('X' or 'O')
+  bool gameFinished = false; // Flag to track if the game has finished
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Tic Tac Toe'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            // Navigate back when the back icon is pressed
+            Navigator.of(context, rootNavigator: true).pop();
+          },
+        ),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -51,17 +57,21 @@ class _TicTacToePageState extends State<TicTacToePage> {
     );
   }
 
+  // Widget for building each grid item in the Tic Tac Toe board
   Widget _buildGridItem(int index) {
     return GestureDetector(
       onTap: () {
+        // Handle tapping on the grid item
         if (board[index] == '' && !gameFinished) {
           setState(() {
+            // Update the board when a valid move is made
             board[index] = currentPlayer;
             if (_checkWinner()) {
               _showWinnerDialog();
             } else if (_isBoardFull()) {
               _showDrawDialog();
             } else {
+              // Switch to the next player's turn
               currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
             }
           });
@@ -86,6 +96,7 @@ class _TicTacToePageState extends State<TicTacToePage> {
     );
   }
 
+  // Check if there is a winner on the current board
   bool _checkWinner() {
     // Check rows, columns, and diagonals
     for (int i = 0; i < 9; i += 3) {
@@ -118,10 +129,12 @@ class _TicTacToePageState extends State<TicTacToePage> {
     return false;
   }
 
+  // Check if the Tic Tac Toe board is full (a draw)
   bool _isBoardFull() {
     return !board.contains('');
   }
 
+  // Show a dialog when there is a winner
   void _showWinnerDialog() {
     showDialog(
       context: context,
@@ -142,6 +155,7 @@ class _TicTacToePageState extends State<TicTacToePage> {
     );
   }
 
+  // Show a dialog when the game is a draw
   void _showDrawDialog() {
     showDialog(
       context: context,
@@ -162,6 +176,7 @@ class _TicTacToePageState extends State<TicTacToePage> {
     );
   }
 
+  // Reset the game to its initial state
   void _resetGame() {
     setState(() {
       board = List.filled(9, '');

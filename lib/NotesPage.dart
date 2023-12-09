@@ -24,7 +24,7 @@ class _NotesPageState extends State<NotesPage> {
         onPressed: _showNoteDialog,
         tooltip: 'Add Note', // Change tooltip to "Add Note"
         backgroundColor: Colors.teal,
-        child: const Icon(Icons.add),
+        child: const Icon(Icons.add), // Change this line to use the plus icon
       ),
     );
   }

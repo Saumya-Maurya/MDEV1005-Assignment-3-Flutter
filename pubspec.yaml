@@ -21,4 +21,4 @@ dev_dependencies:
 
 flutter:
   assets:
-    - assets/luffy.png  # Assuming 'luffy.png' is the image file name
+    - assets/luffy.png
