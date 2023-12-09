@@ -10,19 +10,20 @@ class NotesPage extends StatefulWidget {
 
 class _NotesPageState extends State<NotesPage> {
   List<String> notes = [];
-
-  TextEditingController _noteController = TextEditingController();
+  final TextEditingController _noteController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Notes'),
+        elevation: 8,
       ),
       body: _buildNotesList(),
       floatingActionButton: FloatingActionButton(
         onPressed: _showNoteDialog,
-        tooltip: 'Add Note',
+        tooltip: 'Add Note', // Change tooltip to "Add Note"
+        backgroundColor: Colors.teal,
         child: const Icon(Icons.add),
       ),
     );
@@ -32,18 +33,25 @@ class _NotesPageState extends State<NotesPage> {
     return ListView.builder(
       itemCount: notes.length,
       itemBuilder: (context, index) {
-        return ListTile(
-          title: Text(notes[index]),
-          onTap: () => _showNoteDialog(index),
-          onLongPress: () => _deleteNoteDialog(index),
+        return Card(
+          elevation: 4,
+          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: ListTile(
+            title: Text(
+              notes[index],
+              style: const TextStyle(fontSize: 18),
+            ),
+            onTap: () => _showNoteDialog(index),
+            onLongPress: () => _deleteNoteDialog(index),
+          ),
         );
       },
     );
   }
 
   Future<void> _showNoteDialog([int? index]) async {
-    String dialogTitle = 'Add Note';
-    String actionButtonText = 'Add';
+    String dialogTitle = 'Add Note'; // Change default title to "Add Note"
+    String actionButtonText = 'Add'; // Change default button text to "Add"
 
     if (index != null) {
       dialogTitle = 'Edit Note';

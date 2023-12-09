@@ -23,6 +23,11 @@ class _TicTacToePageState extends State<TicTacToePage> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          const Text(
+            "Let's Fight!",
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 16),
           GridView.builder(
             shrinkWrap: true,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -64,12 +69,17 @@ class _TicTacToePageState extends State<TicTacToePage> {
       },
       child: Container(
         decoration: BoxDecoration(
-          border: Border.all(),
+          color: Colors.indigo[50],
+          border: Border.all(color: Colors.indigo),
+          borderRadius: BorderRadius.circular(8.0),
         ),
         child: Center(
           child: Text(
             board[index],
-            style: TextStyle(fontSize: 40),
+            style: TextStyle(
+              fontSize: 40,
+              color: (board[index] == 'X') ? Colors.red : Colors.blue,
+            ),
           ),
         ),
       ),
@@ -77,7 +87,7 @@ class _TicTacToePageState extends State<TicTacToePage> {
   }
 
   bool _checkWinner() {
-    // Check rows
+    // Check rows, columns, and diagonals
     for (int i = 0; i < 9; i += 3) {
       if (board[i] != '' &&
           board[i] == board[i + 1] &&
@@ -87,7 +97,6 @@ class _TicTacToePageState extends State<TicTacToePage> {
       }
     }
 
-    // Check columns
     for (int i = 0; i < 3; i++) {
       if (board[i] != '' &&
           board[i] == board[i + 3] &&
@@ -97,7 +106,6 @@ class _TicTacToePageState extends State<TicTacToePage> {
       }
     }
 
-    // Check diagonals
     if (board[0] != '' && board[0] == board[4] && board[0] == board[8]) {
       gameFinished = true;
       return true;
@@ -139,7 +147,7 @@ class _TicTacToePageState extends State<TicTacToePage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('It\'s a Draw!'),
+          title: Text("It's a Draw!"),
           actions: [
             TextButton(
               onPressed: () {

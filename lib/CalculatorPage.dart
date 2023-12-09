@@ -21,7 +21,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
         try {
           Parser p = Parser();
           Expression exp = p.parse(_expression);
-          MyContextModel cm = MyContextModel(); // Renamed here
+          MyContextModel cm = MyContextModel();
           _result = exp.evaluate(EvaluationType.REAL, cm).toString();
         } catch (e) {
           _result = 'Error';
@@ -40,8 +40,12 @@ class _CalculatorPageState extends State<CalculatorPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           // Display
-          Padding(
-            padding: const EdgeInsets.all(16.0),
+          Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: Colors.grey[200],
+              borderRadius: BorderRadius.circular(10),
+            ),
             child: Text(
               _expression,
               style: const TextStyle(fontSize: 24),
@@ -49,8 +53,13 @@ class _CalculatorPageState extends State<CalculatorPage> {
           ),
 
           // Result
-          Padding(
-            padding: const EdgeInsets.all(16.0),
+          Container(
+            margin: const EdgeInsets.symmetric(vertical: 10),
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: Colors.grey[300],
+              borderRadius: BorderRadius.circular(10),
+            ),
             child: Text(
               _result,
               style: const TextStyle(fontSize: 24),
@@ -58,41 +67,18 @@ class _CalculatorPageState extends State<CalculatorPage> {
           ),
 
           // Calculator buttons
-          Table(
-            children: [
-              TableRow(
-                children: [
-                  _buildButton('7'),
-                  _buildButton('8'),
-                  _buildButton('9'),
-                  _buildButton('/'),
-                ],
-              ),
-              TableRow(
-                children: [
-                  _buildButton('4'),
-                  _buildButton('5'),
-                  _buildButton('6'),
-                  _buildButton('*'),
-                ],
-              ),
-              TableRow(
-                children: [
-                  _buildButton('1'),
-                  _buildButton('2'),
-                  _buildButton('3'),
-                  _buildButton('-'),
-                ],
-              ),
-              TableRow(
-                children: [
-                  _buildButton('0'),
-                  _buildButton('C'),
-                  _buildButton('='),
-                  _buildButton('+'),
-                ],
-              ),
-            ],
+          GridView.builder(
+            shrinkWrap: true,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 4,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+              childAspectRatio: 1.5,
+            ),
+            itemCount: buttons.length,
+            itemBuilder: (context, index) {
+              return _buildButton(buttons[index]);
+            },
           ),
         ],
       ),
@@ -102,12 +88,26 @@ class _CalculatorPageState extends State<CalculatorPage> {
   Widget _buildButton(String buttonText) {
     return ElevatedButton(
       onPressed: () => _onButtonPressed(buttonText),
+      style: ElevatedButton.styleFrom(
+        primary: Colors.blueGrey[700],
+        padding: const EdgeInsets.all(20),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
       child: Text(
         buttonText,
-        style: const TextStyle(fontSize: 20),
+        style: const TextStyle(fontSize: 20, color: Colors.white),
       ),
     );
   }
+
+  List<String> buttons = [
+    '7', '8', '9', '/',
+    '4', '5', '6', '*',
+    '1', '2', '3', '-',
+    '0', 'C', '=', '+',
+  ];
 }
 
 class MyContextModel extends ContextModel {

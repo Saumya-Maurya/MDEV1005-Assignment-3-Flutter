@@ -65,19 +65,25 @@ class _ApiPageState extends State<ApiPage> {
     if (_imageUrls.isEmpty) {
       return Center(child: CircularProgressIndicator());
     } else {
-      return GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 8.0,
-          mainAxisSpacing: 8.0,
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: GridView.builder(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 8.0,
+            mainAxisSpacing: 8.0,
+          ),
+          itemCount: _imageUrls.length,
+          itemBuilder: (context, index) {
+            return ClipRRect(
+              borderRadius: BorderRadius.circular(8.0),
+              child: Image.network(
+                _imageUrls[index],
+                fit: BoxFit.cover,
+              ),
+            );
+          },
         ),
-        itemCount: _imageUrls.length,
-        itemBuilder: (context, index) {
-          return Image.network(
-            _imageUrls[index],
-            fit: BoxFit.cover,
-          );
-        },
       );
     }
   }
